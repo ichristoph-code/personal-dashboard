@@ -1,0 +1,32 @@
+{
+  "api_token": "YOUR_YNAB_API_TOKEN",
+  "unsplash_access_key": "YOUR_UNSPLASH_ACCESS_KEY",
+  "work_address": "Your Work Address, City, State ZIP",
+  "anthropic_api_key": "YOUR_ANTHROPIC_API_KEY",
+  "budget_id": "last-used",
+  "auto_refresh_minutes": 60,
+  "things_auth_token": "YOUR_THINGS_AUTH_TOKEN",
+  "latitude": 37.89,
+  "longitude": -122.54,
+  "news_feeds": [
+    {
+      "name": "NPR",
+      "url": "https://feeds.npr.org/1001/rss.xml"
+    },
+    {
+      "name": "BBC",
+      "url": "https://feeds.bbci.co.uk/news/rss.xml"
+    }
+  ],
+  "habits": [
+    "Exercise",
+    "Reading",
+    "Meditation"
+  ],
+  "quick_links": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com"
+    }
+  ]
+}

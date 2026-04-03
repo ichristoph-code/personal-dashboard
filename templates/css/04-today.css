@@ -1,0 +1,429 @@
+/* ── Today Briefing Tab ── */
+
+.today-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    padding: 4px 0;
+}
+
+.today-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 20px 22px;
+    box-shadow: var(--card-shadow);
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    border-left: 4px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.today-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.today-card:active {
+    transform: translateY(0);
+}
+
+html.dark-mode .today-card:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+}
+
+/* Card type accent colors (left border) */
+.today-weather   { border-left-color: #ed8936; }
+.today-calendar  { border-left-color: #667eea; }
+.today-tasks     { border-left-color: #48bb78; }
+.today-email     { border-left-color: #3182ce; }
+.today-imessage  { border-left-color: #38b2ac; }
+.today-finance   { border-left-color: #9f7aea; }
+.today-birthdays { border-left-color: #ed64a6; }
+
+/* Card header */
+.today-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.today-card-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.today-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+
+.today-card-count {
+    margin-left: auto;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Card body */
+.today-card-body {
+    color: var(--text);
+}
+
+.today-empty {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: 0;
+    padding: 4px 0;
+}
+
+.today-stat {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--text);
+}
+
+.today-more {
+    color: var(--accent) !important;
+    font-size: 13px !important;
+    font-style: italic;
+}
+
+/* ── Weather Card ── */
+.today-weather-main {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.today-weather-temp {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+}
+
+.today-weather-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    text-transform: capitalize;
+}
+
+.today-weather-feels {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 2px;
+}
+
+.today-weather-hilo {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 2px;
+}
+
+/* ── Calendar Card ── */
+.today-event-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.today-event {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border-light, rgba(0,0,0,0.06));
+    font-size: 14px;
+}
+
+.today-event:last-child { border-bottom: none; }
+
+.today-event-time {
+    flex-shrink: 0;
+    width: 70px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    text-align: right;
+}
+
+.today-event-title {
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Tasks Card ── */
+.today-task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.today-task-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+    font-size: 14px;
+    color: var(--text);
+}
+
+.today-task-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+}
+
+.today-task-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.today-task-project {
+    flex-shrink: 0;
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--hover-bg, rgba(0,0,0,0.04));
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-left: auto;
+}
+
+/* ── Email & iMessage Cards ── */
+.today-subject-list {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+}
+
+.today-subject {
+    padding: 3px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: 1px solid var(--border-light, rgba(0,0,0,0.04));
+}
+
+.today-subject:last-child { border-bottom: none; }
+
+/* ── Finance Card ── */
+.today-finance-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 4px 0;
+}
+
+.today-finance-label {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.today-finance-value {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.today-finance-value.positive { color: var(--green); }
+.today-finance-value.negative { color: var(--red); }
+
+/* ── Birthdays Card ── */
+.today-birthday-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.today-birthday-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border-light, rgba(0,0,0,0.04));
+    font-size: 14px;
+}
+
+.today-birthday-item:last-child { border-bottom: none; }
+
+.today-bday-name { color: var(--text); }
+.today-bday-age { font-size: 12px; color: var(--text-muted); }
+.today-bday-when {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+/* ── Weather 5-day forecast strip ── */
+.today-forecast-strip {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-light, rgba(0,0,0,0.06));
+    gap: 4px;
+}
+
+.today-forecast-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+}
+
+.today-forecast-dow {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--text-muted);
+}
+
+.today-forecast-icon { font-size: 15px; line-height: 1.3; }
+
+.today-forecast-hi {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.today-forecast-lo {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* ── Finance sparkline ── */
+.today-sparkline {
+    display: block;
+    width: 100%;
+    height: 36px;
+    margin: 6px 0 2px;
+    overflow: visible;
+}
+
+/* ── Calendar event open-in-app link ── */
+.today-event-cal-link {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 11px;
+    color: var(--text-faint, var(--text-muted));
+    opacity: 0;
+    text-decoration: none;
+    padding: 0 2px;
+    transition: opacity 0.15s;
+    line-height: 1;
+}
+
+.today-event:hover .today-event-cal-link { opacity: 0.6; }
+.today-event-cal-link:hover { opacity: 1 !important; color: var(--accent); }
+
+/* ── Today task quick-complete button ── */
+.today-task-check {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--text-muted);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 10px;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.today-task-check:hover {
+    border-color: var(--green, #48bb78);
+    background: var(--green, #48bb78);
+    color: #fff;
+}
+
+/* ── Privacy blur for finance values on Today tab ── */
+body.today-finance-on .today-finance-value {
+    filter: blur(8px);
+    user-select: none;
+    transition: filter 0.2s ease;
+}
+body:not(.today-finance-on) .today-finance-value {
+    transition: filter 0.2s ease;
+}
+.today-finance-privacy-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 4px;
+    color: var(--text-muted, #888);
+    display: flex;
+    align-items: center;
+    opacity: 0.7;
+}
+.today-finance-privacy-btn:hover { opacity: 1; }
+body.today-finance-on .tf-eye-open  { display: none; }
+body.today-finance-on .tf-eye-closed { display: inline; }
+body:not(.today-finance-on) .tf-eye-open  { display: inline; }
+body:not(.today-finance-on) .tf-eye-closed { display: none; }
+
+/* ── Past calendar events ── */
+.today-event--past {
+    opacity: 0.38;
+}
+.today-event--past .today-event-title {
+    text-decoration: line-through;
+    text-decoration-color: var(--text-muted);
+}
+.today-event--past .today-event-time {
+    color: var(--text-muted);
+}
+
+/* ── Today card drag-to-reorder ── */
+.today-card .card-drag-handle {
+    top: 14px;
+    right: 14px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .today-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .today-card {
+        padding: 16px 18px;
+    }
+    .today-weather-temp {
+        font-size: 26px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .today-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

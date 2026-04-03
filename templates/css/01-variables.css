@@ -1,0 +1,73 @@
+/* ── CSS Custom Properties (Light Theme) ── */
+:root {
+    --bg: #f0f2f5;
+    --card-bg: #fff;
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    --card-shadow-hover: 0 2px 6px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.06);
+    --text: #2d3748;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --text-faint: #a0aec0;
+    --text-faintest: #cbd5e0;
+    --border: #e2e8f0;
+    --border-light: #edf2f7;
+    --border-lightest: #f7fafc;
+    --input-bg: #fff;
+    --subtle-bg: #f7fafc;
+    --code-bg: #edf2f7;
+    --accent: #667eea;
+    --accent-hover: #5a6fd6;
+    --accent-bg: rgba(102, 126, 234, 0.08);
+    --accent-ring: rgba(102, 126, 234, 0.1);
+    --green: #48bb78;
+    --green-dark: #38a169;
+    --green-ring: rgba(72, 187, 120, 0.1);
+    --red: #e53e3e;
+    --blue: #3182ce;
+    --blue-light: #4299e1;
+    --orange: #ed8936;
+    --orange-dark: #dd6b20;
+    --orange-ring: rgba(237, 137, 54, 0.1);
+    --purple: #9f7aea;
+    --purple-ring: rgba(159, 122, 234, 0.1);
+    --chart-bar-bg: rgba(102, 126, 234, 0.75);
+    --chart-bar-border: rgba(102, 126, 234, 1);
+    --chart-grid: rgba(0,0,0,0.04);
+}
+
+/* ── Dark Mode ── */
+html.dark-mode {
+    --bg: #1a202c;
+    --card-bg: #2d3748;
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+    --card-shadow-hover: 0 2px 6px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.3);
+    --text: #e2e8f0;
+    --text-secondary: #cbd5e0;
+    --text-muted: #a0aec0;
+    --text-faint: #718096;
+    --text-faintest: #4a5568;
+    --border: #4a5568;
+    --border-light: #2d3748;
+    --border-lightest: #1a202c;
+    --input-bg: #1a202c;
+    --subtle-bg: #1a202c;
+    --code-bg: #1a202c;
+    --accent: #7f9cf5;
+    --accent-hover: #667eea;
+    --accent-bg: rgba(127, 156, 245, 0.12);
+    --accent-ring: rgba(127, 156, 245, 0.2);
+    --green: #68d391;
+    --green-dark: #48bb78;
+    --green-ring: rgba(104, 211, 145, 0.15);
+    --red: #fc8181;
+    --blue: #63b3ed;
+    --blue-light: #90cdf4;
+    --orange: #f6ad55;
+    --orange-dark: #ed8936;
+    --orange-ring: rgba(246, 173, 85, 0.15);
+    --purple: #b794f4;
+    --purple-ring: rgba(183, 148, 244, 0.15);
+    --chart-bar-bg: rgba(127, 156, 245, 0.75);
+    --chart-bar-border: rgba(127, 156, 245, 1);
+    --chart-grid: rgba(255,255,255,0.06);
+}

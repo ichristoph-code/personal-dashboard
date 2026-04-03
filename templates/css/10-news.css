@@ -1,0 +1,312 @@
+/* ── News styles ── */
+.news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.news-header h3 { margin-bottom: 0; }
+.news-filter-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 0.75em;
+    font-weight: 500;
+    color: var(--text-faint);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+.news-filter-btn:hover { color: var(--orange); border-color: var(--orange); }
+.news-filter-btn.active { background: var(--orange); color: #fff; border-color: var(--orange); }
+.news-item {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 10px 6px;
+    flex-wrap: wrap;
+    transition: opacity 0.3s ease, background 0.15s ease;
+    border-radius: 6px;
+    margin: 0 -6px;
+}
+.news-item:hover {
+    background: var(--subtle-bg);
+}
+.news-item:last-child { border-bottom: none; }
+.news-item.news-read { opacity: 0.45; }
+.news-item.news-read .news-title { text-decoration: line-through; }
+.news-item.news-read .news-read-btn { color: var(--green); border-color: var(--green); }
+.news-item.news-saved { border-left: 3px solid var(--orange); padding-left: 8px; }
+.news-actions {
+    display: flex;
+    gap: 4px;
+    flex: 0 0 auto;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    background: inherit;
+}
+.news-item:hover .news-actions { opacity: 1; }
+.news-read-btn, .news-save-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    color: var(--text-faint);
+    font-size: 0.8em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+}
+.news-read-btn:hover { color: var(--green); border-color: var(--green); }
+.news-save-btn:hover { color: var(--orange); border-color: var(--orange); }
+.news-save-btn.news-save-active { color: var(--orange); border-color: var(--orange); }
+.news-global-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+.news-global-header h3 { margin-bottom: 0; }
+.news-header-actions { display: flex; gap: 8px; align-items: center; }
+.news-manage-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 0.75em;
+    font-weight: 500;
+    color: var(--text-faint);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.15s ease;
+}
+.news-manage-btn:hover { color: var(--accent); border-color: var(--accent); }
+.news-manage-btn svg { vertical-align: middle; }
+.news-section-card { margin-bottom: 10px; transition: transform 0.2s ease, opacity 0.2s ease; }
+.news-section-card.news-drag-over {
+    border-top: 3px solid var(--accent);
+    margin-top: -3px;
+}
+.news-section-card.news-drag-over-bottom {
+    border-bottom: 3px solid var(--accent);
+    margin-bottom: -3px;
+}
+.news-section-card.news-dragging {
+    opacity: 0.4;
+}
+.news-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+    padding: 2px 0 6px;
+}
+.news-section-header:hover .news-section-title { color: var(--accent); }
+.news-drag-handle {
+    cursor: grab;
+    color: var(--text-faintest);
+    font-size: 1.1em;
+    padding: 2px 2px 2px 0;
+    line-height: 1;
+    transition: color 0.15s;
+}
+.news-drag-handle:hover { color: var(--text-muted); }
+.news-drag-handle:active { cursor: grabbing; }
+.news-section-title,
+.news-section-count,
+.news-section-chevron { cursor: pointer; }
+.news-section-title {
+    margin-bottom: 0;
+    font-size: 1em;
+    transition: color 0.15s;
+}
+.news-section-count {
+    font-size: 0.72em;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--subtle-bg);
+    border: 1px solid var(--border);
+    padding: 1px 7px;
+    border-radius: 10px;
+}
+.news-section-chevron {
+    margin-left: auto;
+    font-size: 0.85em;
+    color: var(--text-faint);
+    transition: transform 0.2s;
+}
+.news-section-chevron.collapsed {
+    transform: rotate(-90deg);
+}
+.news-section-body {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+.news-section-body.collapsed {
+    max-height: 0 !important;
+}
+.news-source {
+    flex: 0 0 auto;
+    font-size: 0.7em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--accent);
+    background: var(--accent-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+.news-title {
+    flex: 1;
+    font-size: 0.9em;
+    color: var(--text);
+    font-weight: 500;
+}
+.news-item:hover .news-title { color: var(--accent); }
+.news-date {
+    flex: 0 0 auto;
+    font-size: 0.72em;
+    color: var(--text-faintest);
+}
+
+/* ── Feed Manager Modal ── */
+.feed-mgr-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+}
+.feed-mgr-modal {
+    background: var(--card-bg);
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    width: 90%;
+    max-width: 580px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.feed-mgr-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border-light);
+}
+.feed-mgr-header h3 { margin: 0; font-size: 1.05em; }
+.feed-mgr-close {
+    background: none;
+    border: none;
+    font-size: 1.4em;
+    color: var(--text-faint);
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+}
+.feed-mgr-close:hover { color: var(--red); }
+.feed-mgr-body {
+    overflow-y: auto;
+    padding: 12px 20px;
+    flex: 1;
+}
+.feed-mgr-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.feed-mgr-input {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 0.85em;
+    background: var(--subtle-bg);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+}
+.feed-mgr-input:focus { border-color: var(--accent); }
+.feed-mgr-name { flex: 0 0 130px; }
+.feed-mgr-url  { flex: 1; min-width: 0; }
+.feed-mgr-del-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    width: 30px;
+    height: 30px;
+    font-size: 1.1em;
+    color: var(--text-faint);
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+}
+.feed-mgr-del-btn:hover { color: var(--red); border-color: var(--red); }
+.feed-mgr-add-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 20px 12px;
+    border-top: 1px solid var(--border-lightest);
+}
+.feed-mgr-add-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    width: 30px;
+    height: 30px;
+    font-size: 1.2em;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s;
+}
+.feed-mgr-add-btn:hover { opacity: 0.85; }
+.feed-mgr-footer {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    padding: 12px 20px 16px;
+    border-top: 1px solid var(--border-light);
+}
+.feed-mgr-save {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 22px;
+    font-size: 0.88em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+.feed-mgr-save:hover { opacity: 0.85; }
+.feed-mgr-save:disabled { opacity: 0.5; cursor: not-allowed; }
+.feed-mgr-cancel {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 0.88em;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.feed-mgr-cancel:hover { border-color: var(--text-faint); color: var(--text); }

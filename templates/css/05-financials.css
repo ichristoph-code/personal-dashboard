@@ -1,0 +1,615 @@
+/* ── Collapsible finance sections ── */
+.fin-section {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+}
+.fin-section:hover {
+    box-shadow: var(--card-shadow-hover);
+}
+
+.fin-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 24px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease;
+}
+.fin-section-header:hover {
+    background: var(--subtle-bg);
+}
+
+/* ── Drag-to-reorder handle ── */
+.fin-drag-handle {
+    cursor: grab;
+    color: var(--text-faintest);
+    font-size: 1.2em;
+    opacity: 0.35;
+    padding: 4px 6px;
+    line-height: 1;
+    transition: color 0.15s, opacity 0.15s;
+    flex-shrink: 0;
+}
+.fin-drag-handle:active { cursor: grabbing; }
+.fin-section-header:hover .fin-drag-handle { opacity: 0.7; }
+.fin-drag-handle:hover { color: var(--text-muted); opacity: 1 !important; }
+.fin-section.fin-dragging { opacity: 0.4; }
+.fin-section.fin-drag-over { border-top: 3px solid var(--accent); margin-top: -3px; }
+.fin-section-header h2 {
+    flex: 1;
+    font-size: 1.15em;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+}
+.fin-section-icon {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+}
+.fin-chevron {
+    color: var(--text-faint);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+}
+.fin-section-header.collapsed .fin-chevron {
+    transform: rotate(-90deg);
+}
+
+.fin-section-body {
+    padding: 0 24px 24px;
+    max-height: 2000px;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease, opacity 0.25s ease;
+    opacity: 1;
+}
+.fin-section-body.collapsed {
+    max-height: 0;
+    padding: 0 24px;
+    opacity: 0;
+}
+
+/* ── Enhanced summary cards (5-column responsive) ── */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+    position: relative;
+}
+.summary-cards .card {
+    margin-bottom: 0;
+}
+.summary-cards .amount-sub {
+    font-size: 0.55em;
+    font-weight: 400;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 2px;
+}
+
+/* ── Account health dots ── */
+.account-name-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+.account-bal-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+.acct-health {
+    font-size: 8px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+.health-green { color: var(--green); }
+.health-yellow { color: var(--orange); }
+.health-red { color: var(--red); }
+.account-pending {
+    font-size: 0.75em;
+    color: var(--text-faint);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Savings goals ── */
+.goals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.goal-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 6px 12px;
+    align-items: center;
+}
+.goal-header {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+}
+.goal-name {
+    font-weight: 600;
+    font-size: 0.95em;
+    color: var(--text);
+}
+.goal-detail {
+    font-size: 0.8em;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+.goal-bar-track {
+    grid-column: 1;
+    height: 8px;
+    background: var(--border-light);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.goal-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+.goal-pct {
+    grid-column: 2;
+    font-size: 0.8em;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: right;
+    min-width: 36px;
+}
+
+/* ── Bills list ── */
+.bills-list {
+    display: flex;
+    flex-direction: column;
+}
+.bill-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-light);
+}
+.bill-item:last-child { border-bottom: none; }
+.bill-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+.bill-payee {
+    font-weight: 600;
+    font-size: 0.95em;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.bill-meta {
+    font-size: 0.8em;
+    color: var(--text-faint);
+}
+.bill-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    flex-shrink: 0;
+}
+.bill-amount {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+.bill-date {
+    font-size: 0.8em;
+    color: var(--text-faint);
+}
+.bills-summary {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 2px solid var(--border-light);
+    font-size: 0.9em;
+    color: var(--text-muted);
+    text-align: right;
+}
+
+/* ── Transactions feed ── */
+.txn-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 420px;
+    overflow-y: auto;
+}
+.txn-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border-light);
+}
+.txn-item:last-child { border-bottom: none; }
+.txn-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+.txn-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+.txn-status {
+    font-size: 8px;
+    flex-shrink: 0;
+}
+.pending-dot { color: var(--orange); }
+.recon-dot { color: var(--green); }
+.txn-payee {
+    font-weight: 500;
+    font-size: 0.92em;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.txn-meta {
+    font-size: 0.78em;
+    color: var(--text-faint);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.txn-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    flex-shrink: 0;
+    margin-left: 12px;
+}
+.txn-amount {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.95em;
+}
+.txn-date {
+    font-size: 0.78em;
+    color: var(--text-faint);
+}
+
+/* ── Debt tracker ── */
+.debt-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.debt-card {
+    background: var(--subtle-bg);
+    padding: 16px;
+    border-radius: 8px;
+}
+.debt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+}
+.debt-name {
+    font-weight: 600;
+    color: var(--text);
+}
+.debt-balance {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+.debt-detail {
+    font-size: 0.82em;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+}
+
+/* ── AI Review ── */
+.review-content {
+    font-size: 0.95em;
+    line-height: 1.65;
+    color: var(--text-secondary);
+}
+.review-content p {
+    margin-bottom: 10px;
+}
+.review-content strong {
+    color: var(--text);
+}
+.review-list {
+    list-style: none;
+    padding: 0;
+}
+.review-list li {
+    position: relative;
+    padding: 8px 0 8px 20px;
+    border-bottom: 1px solid var(--border-light);
+}
+.review-list li:last-child { border-bottom: none; }
+.review-list li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 600;
+}
+.review-placeholder {
+    padding: 16px;
+    background: var(--subtle-bg);
+    border-radius: 8px;
+    color: var(--text-faint);
+    font-size: 0.9em;
+}
+.review-placeholder code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85em;
+}
+
+/* ── Market overview ── */
+.market-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+}
+.market-card {
+    background: var(--subtle-bg);
+    padding: 14px;
+    border-radius: 8px;
+    text-align: center;
+}
+.market-name {
+    font-size: 0.8em;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+.market-price {
+    font-size: 1.15em;
+    font-weight: 700;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+.market-change {
+    font-size: 0.82em;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+/* ── Finance quick links ── */
+.fin-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 8px 0;
+}
+.fin-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+.fin-link:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-1px);
+}
+
+/* ── Chart containers inside fin-sections ── */
+.fin-section .chart-inner {
+    padding: 0;
+}
+.fin-section canvas {
+    max-width: 100%;
+}
+
+/* ── Budget vs Actual chart ── */
+.bva-chart-wrap {
+    height: 400px;
+    position: relative;
+}
+.bva-chart-wrap canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ── Trend chart ── */
+.trend-chart-wrap {
+    height: 300px;
+    position: relative;
+}
+.trend-chart-wrap canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ── Top payees chart ── */
+.payees-chart-wrap {
+    height: 300px;
+    position: relative;
+}
+.payees-chart-wrap canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ── Pie chart in collapsible section ── */
+.fin-section .pie-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.fin-section .pie-canvas-wrap {
+    width: 480px;
+    height: 420px;
+}
+
+/* ── Category spending chart in collapsible ── */
+.cat-chart-wrap canvas {
+    max-width: 100%;
+}
+
+/* ── Net worth chart ── */
+.nw-chart-wrap {
+    height: 300px;
+    position: relative;
+}
+.nw-chart-wrap canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ── Claude chat ── */
+.claude-chat {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.claude-chat-messages {
+    max-height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.claude-chat-welcome {
+    color: var(--text-faint);
+    font-size: 0.9em;
+    padding: 16px;
+    background: var(--subtle-bg);
+    border-radius: 8px;
+    text-align: center;
+    line-height: 1.5;
+}
+.claude-chat-msg {
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.93em;
+    line-height: 1.6;
+    max-width: 88%;
+}
+.claude-chat-msg.user {
+    background: var(--accent);
+    color: #fff;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+.claude-chat-msg.assistant {
+    background: var(--subtle-bg);
+    color: var(--text-secondary);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+.claude-chat-msg.assistant strong {
+    color: var(--text);
+}
+.claude-chat-msg.assistant p {
+    margin: 0 0 6px;
+}
+.claude-chat-msg.assistant p:last-child {
+    margin-bottom: 0;
+}
+.claude-chat-msg.assistant ul {
+    margin: 4px 0;
+    padding-left: 18px;
+}
+.claude-chat-msg.assistant li {
+    margin-bottom: 4px;
+}
+.claude-chat-msg.loading {
+    color: var(--text-faint);
+    font-style: italic;
+}
+.claude-chat-input-wrap {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.claude-chat-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    background: var(--card-bg);
+    color: var(--text);
+    font-size: 0.92em;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.claude-chat-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+.claude-chat-input::placeholder {
+    color: var(--text-faint);
+}
+.claude-chat-send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+.claude-chat-send:hover {
+    background: var(--accent-hover, #5a6fd6);
+    transform: scale(1.05);
+}
+.claude-chat-send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ── Responsive: stack on smaller screens ── */
+@media (max-width: 768px) {
+    .fin-section .pie-canvas-wrap {
+        width: 100%;
+        height: 300px;
+    }
+    .bva-chart-wrap { height: 350px; }
+    .trend-chart-wrap { height: 250px; }
+    .payees-chart-wrap { height: 250px; }
+    .nw-chart-wrap { height: 250px; }
+    .market-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .claude-chat-msg {
+        max-width: 95%;
+    }
+}

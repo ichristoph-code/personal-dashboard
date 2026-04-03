@@ -1,0 +1,109 @@
+/* ── Weather widget ── */
+.weather-widget {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 4px 12px;
+    border-radius: 16px;
+    margin-left: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+.weather-widget:hover {
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(255,255,255,0.3);
+}
+.weather-icon { font-size: 1.1em; }
+.weather-temp { color: #fff; font-weight: 700; font-size: 0.9em; }
+.weather-desc { color: rgba(255,255,255,0.7); font-size: 0.8em; }
+
+/* ── Forecast cards ── */
+.forecast-card { border-left: 4px solid var(--blue-light); }
+.forecast-row {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 4px 0;
+}
+.forecast-day {
+    flex: 1;
+    min-width: 90px;
+    text-align: center;
+    padding: 12px 8px;
+    background: var(--subtle-bg);
+    border-radius: 10px;
+}
+.forecast-label { font-size: 0.75em; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.forecast-icon { font-size: 1.8em; margin: 6px 0; }
+.forecast-temps { font-size: 0.9em; font-weight: 600; }
+.forecast-high { color: var(--red); }
+.forecast-low { color: var(--blue-light); margin-left: 6px; }
+.forecast-desc { font-size: 0.72em; color: var(--text-faint); margin-top: 4px; }
+
+/* ── Weekly Calendar Forecast Banner ── */
+.cal-week-forecast-banner {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 20px 24px;
+    margin-top: 16px;
+    border-left: 4px solid var(--blue-light);
+}
+.cal-week-forecast-banner h3 {
+    color: var(--text-muted);
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+.cal-week-forecast-row {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 2px 0;
+}
+.cal-week-forecast-day {
+    flex: 1;
+    min-width: 80px;
+    text-align: center;
+    padding: 14px 8px 12px;
+    background: var(--subtle-bg);
+    border-radius: 10px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.cal-week-forecast-day:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.cal-week-forecast-label {
+    font-size: 0.72em;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+.cal-week-forecast-icon {
+    font-size: 2em;
+    line-height: 1.2;
+    margin: 4px 0;
+}
+.cal-week-forecast-temps {
+    font-size: 0.88em;
+    font-weight: 600;
+    margin-top: 2px;
+}
+.cal-week-forecast-desc {
+    font-size: 0.68em;
+    color: var(--text-faint);
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -1,0 +1,197 @@
+/* ── Prevent text selection on double-click targets ── */
+.evt-row,
+.cal-week-evt,
+.cal-month-evt,
+.cal-year-cell {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ── Event actions (edit/delete) ── */
+.evt-actions {
+    display: inline-flex;
+    gap: 4px;
+    margin-left: 8px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+.evt-row:hover .evt-actions { opacity: 1; }
+.evt-edit-btn, .evt-del-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 5px;
+    cursor: pointer;
+    color: var(--text-faint);
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+}
+.evt-edit-btn:hover { color: var(--accent); border-color: var(--accent); }
+.evt-del-btn:hover { color: var(--red); border-color: var(--red); }
+.evt-edit-form {
+    padding: 8px 0 4px;
+    border-top: 1px solid var(--border-light);
+    margin-top: 6px;
+    max-width: 520px;
+}
+.evt-edit-form .add-event-input {
+    padding: 5px 9px;
+    font-size: 0.85em;
+}
+.evt-edit-form .add-event-btn,
+.evt-edit-form .evt-cancel-btn {
+    padding: 5px 13px;
+    font-size: 0.85em;
+}
+.evt-cancel-btn {
+    background: var(--border-light);
+    color: var(--text-muted);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: 4px;
+}
+.evt-cancel-btn:hover { background: var(--border); }
+
+/* ── Event edit: calendar select row ── */
+.evt-edit-cal-row {
+    gap: 6px;
+}
+.evt-cal-select {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.88em;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--input-bg);
+    color: var(--text);
+    font-family: inherit;
+    outline: none;
+    cursor: pointer;
+}
+.evt-cal-select:focus { border-color: var(--accent); }
+
+/* Color swatch button next to calendar select */
+.evt-cal-swatch {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.1s, border-color 0.15s;
+}
+.evt-cal-swatch:hover {
+    transform: scale(1.1);
+    border-color: var(--text-muted);
+}
+
+/* ── Calendar color picker popup ── */
+.cal-color-picker {
+    position: absolute;
+    z-index: 2000;
+    width: 232px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+    padding: 12px;
+    animation: fadeIn 0.12s ease;
+}
+.cal-color-picker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.cal-color-picker-title {
+    font-size: 0.8em;
+    color: var(--text-muted);
+}
+.cal-color-picker-title strong {
+    color: var(--text);
+    font-weight: 600;
+}
+.cal-color-picker-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: var(--text-faint);
+    line-height: 1;
+    padding: 0 2px;
+}
+.cal-color-picker-close:hover { color: var(--text); }
+.cal-color-picker-swatches {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+}
+.cal-color-swatch-opt {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.1s, border-color 0.12s;
+}
+.cal-color-swatch-opt:hover { transform: scale(1.15); }
+.cal-color-swatch-opt.active {
+    border-color: var(--text);
+    transform: scale(1.1);
+}
+.cal-color-picker-custom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+.cal-color-picker-label {
+    font-size: 0.78em;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+.cal-color-picker-custom input[type="color"] {
+    flex: 1;
+    height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px;
+    cursor: pointer;
+    background: var(--input-bg);
+}
+.cal-color-picker-apply-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.75em;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-family: inherit;
+}
+.cal-color-picker-apply-btn:hover { opacity: 0.85; }
+.cal-color-picker-reset {
+    text-align: right;
+}
+.cal-color-picker-reset-btn {
+    background: none;
+    border: none;
+    font-size: 0.75em;
+    color: var(--text-faint);
+    cursor: pointer;
+    padding: 2px 4px;
+    text-decoration: underline;
+    font-family: inherit;
+}
+.cal-color-picker-reset-btn:hover { color: var(--text); }

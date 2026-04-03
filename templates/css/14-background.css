@@ -1,0 +1,140 @@
+/* ── Rotating Background Photos ── */
+
+#bgPhotoA,
+#bgPhotoB {
+    position: fixed;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: opacity 1.8s ease-in-out;
+    pointer-events: none;
+}
+
+#bgPhotoA {
+    z-index: -1;
+}
+
+#bgPhotoB {
+    z-index: -2;
+}
+
+/* No scrim — photo shows fully */
+#bgPhotoA::after,
+#bgPhotoB::after {
+    display: none;
+}
+
+body.has-bg-photo {
+    --bg: transparent;
+}
+
+/* Chrome: fully transparent, no blur */
+body.has-bg-photo .top-bar {
+    background: transparent !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+body.has-bg-photo .tab-bar-wrap {
+    background: transparent !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+body.has-bg-photo footer {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+/* Cards: fully transparent, no blur, no background */
+body.has-bg-photo .card,
+body.has-bg-photo .draggable-card {
+    background: transparent !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: none;
+}
+
+/* Cards: light tint so photo shows through, strong text-shadow for readability */
+body.has-bg-photo .card,
+body.has-bg-photo .draggable-card {
+    background: rgba(10, 10, 20, 0.30) !important;
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: none;
+}
+
+body.has-bg-photo .card *,
+body.has-bg-photo .draggable-card * {
+    color: #f0f4f8 !important;
+    text-shadow:
+        0 0 6px rgba(0,0,0,1),
+        0 1px 3px rgba(0,0,0,1),
+        0 0 20px rgba(0,0,0,0.8);
+}
+
+/* Journals panel: no card wrapper, apply same treatment directly */
+body.has-bg-photo #panel-journals {
+    background: rgba(10, 10, 20, 0.30);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+}
+
+body.has-bg-photo #panel-journals *,
+body.has-bg-photo #panel-journals a {
+    color: #f0f4f8 !important;
+    text-shadow:
+        0 0 6px rgba(0,0,0,1),
+        0 1px 3px rgba(0,0,0,1),
+        0 0 20px rgba(0,0,0,0.8);
+}
+
+/* SF Events panel: event-card is not .card */
+body.has-bg-photo .event-card {
+    background: rgba(10, 10, 20, 0.30) !important;
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: none;
+}
+
+body.has-bg-photo .event-card * {
+    color: #f0f4f8 !important;
+    text-shadow:
+        0 0 6px rgba(0,0,0,1),
+        0 1px 3px rgba(0,0,0,1),
+        0 0 20px rgba(0,0,0,0.8);
+}
+
+body.has-bg-photo .events-source-label {
+    color: #f0f4f8 !important;
+    text-shadow:
+        0 0 6px rgba(0,0,0,1),
+        0 1px 3px rgba(0,0,0,1),
+        0 0 20px rgba(0,0,0,0.8);
+}
+
+body.has-bg-photo .events-header h3 {
+    color: #f0f4f8 !important;
+    text-shadow:
+        0 0 6px rgba(0,0,0,1),
+        0 1px 3px rgba(0,0,0,1),
+        0 0 20px rgba(0,0,0,0.8);
+}
+
+/* Photo credit in bottom-right corner */
+#bgCredit {
+    position: fixed;
+    bottom: 2.8rem;
+    right: 1rem;
+    z-index: 20;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.45);
+    text-decoration: none;
+    transition: color 0.2s;
+    pointer-events: auto;
+}
+
+#bgCredit:hover {
+    color: rgba(255, 255, 255, 0.9);
+}

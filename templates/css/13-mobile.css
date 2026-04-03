@@ -1,0 +1,551 @@
+/* ═══════════════════════════════════════════════════════════
+   13-mobile.css — iPhone mobile polish
+   Loads after all other CSS; all rules are additive.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 0. Touch & Safe Area Foundations ── */
+:root {
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+    --touch-min: 44px;
+}
+
+/* Touch-specific overrides (applies regardless of screen width) */
+@media (pointer: coarse) {
+    * { -webkit-tap-highlight-color: transparent; }
+
+    /* Show hover-dependent action buttons always on touch */
+    .evt-actions,
+    .news-actions,
+    .mail-actions,
+    .task-actions,
+    .cal-week-evt-actions,
+    .cal-week-add-btn {
+        opacity: 1 !important;
+    }
+
+    /* Hide drag handles — HTML5 drag doesn't work on touch */
+    .task-drag-handle,
+    .area-drag-handle,
+    .proj-drag-handle,
+    .news-drag-handle,
+    .widget-drag-handle,
+    .fin-drag-handle {
+        display: none !important;
+    }
+
+    /* Disable native draggable behavior */
+    [draggable="true"] {
+        -webkit-user-drag: none;
+    }
+}
+
+
+/* ── 1. Mobile Breakpoint: 480px ── */
+@media (max-width: 480px) {
+
+    /* ── 1.1 Safe Areas ── */
+    body {
+        padding-top: var(--safe-top);
+        padding-left: var(--safe-left);
+        padding-right: var(--safe-right);
+    }
+
+    /* ── 1.2 Header ── */
+    .top-bar {
+        padding: 20px 16px 52px;
+        padding-top: calc(20px + var(--safe-top));
+    }
+    .top-bar-inner {
+        padding: 0;
+    }
+    .greeting { font-size: 1.4em; }
+    .header-meta {
+        gap: 8px;
+        margin-top: 4px;
+    }
+    .header-date { font-size: 0.85em; }
+    .header-time { font-size: 0.78em; }
+    .header-actions { gap: 6px; margin-top: 2px; }
+    .refresh-btn, .theme-toggle-btn {
+        min-width: var(--touch-min);
+        min-height: var(--touch-min);
+        padding: 10px;
+    }
+    .next-event-pill {
+        font-size: 0.78em;
+        padding: 6px 12px;
+    }
+    .weather-widget {
+        padding: 5px 10px;
+        font-size: 0.85em;
+    }
+
+    /* ── 1.3 Tab Bar — horizontal scroll ── */
+    .tab-bar-wrap {
+        padding: 0 12px;
+        margin-top: -24px;
+    }
+    .tab-bar {
+        display: flex;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 1px;
+        padding: 3px;
+        border-radius: 12px 12px 0 0;
+        width: 100%;
+    }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+        flex-shrink: 0;
+        min-height: var(--touch-min);
+        padding: 8px 14px;
+        font-size: 0.78em;
+        gap: 5px;
+        border-radius: 8px 8px 0 0;
+    }
+    .tab-btn svg { width: 18px; height: 18px; }
+    .tab-badge {
+        font-size: 0.65em;
+        padding: 1px 5px;
+        min-width: 16px;
+    }
+
+    /* ── 1.4 Container ── */
+    .container {
+        padding: 0 12px 24px;
+        padding-bottom: calc(24px + var(--safe-bottom));
+    }
+
+    /* ── 1.5 Cards ── */
+    .card {
+        padding: 16px;
+        border-radius: 10px;
+        margin-bottom: 14px;
+    }
+    .card h3 {
+        font-size: 0.75em;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+
+    /* ── 1.6 Financial Summary Cards ── */
+    .summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .summary-cards .card { padding: 14px 12px; }
+    .amount { font-size: 1.6em; }
+    .privacy-toggle {
+        min-width: var(--touch-min);
+        min-height: var(--touch-min);
+        padding: 10px;
+    }
+
+    /* ── 1.7 Accounts Grid ── */
+    .accounts-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    /* ── 1.8 Charts ── */
+    .pie-canvas-wrap {
+        width: 100%;
+        height: 260px;
+    }
+    .bva-chart-wrap { height: 300px; }
+    .trend-chart-wrap { height: 220px; }
+    .payees-chart-wrap { height: 220px; }
+    .nw-chart-wrap { height: 200px; }
+    .market-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* ── 1.9 Financial Sections ── */
+    .fin-section-header {
+        padding: 14px 16px;
+        min-height: var(--touch-min);
+    }
+    .fin-section-header h2 { font-size: 1em; }
+    .fin-section-body { padding: 0 16px 16px; }
+    .fin-section-body.collapsed { padding: 0 16px; }
+
+    /* ── 1.10 Financial Links ── */
+    .fin-links { gap: 8px; }
+    .fin-link {
+        padding: 10px 14px;
+        min-height: var(--touch-min);
+        font-size: 0.85em;
+    }
+
+    /* ── 1.11 Transactions ── */
+    .txn-list { font-size: 0.82em; }
+
+    /* ── 1.12 Claude Chat ── */
+    .claude-chat-input {
+        min-height: var(--touch-min);
+        font-size: 16px;  /* Prevents iOS zoom on focus */
+    }
+    .claude-chat-send {
+        min-width: var(--touch-min);
+        min-height: var(--touch-min);
+    }
+
+    /* ── 1.13 Calendar Day View Events ── */
+    .day-card { padding: 16px 12px; }
+    .evt-row {
+        flex-direction: column;
+        gap: 2px;
+        padding: 10px 0;
+    }
+    .evt-time { flex: none; font-size: 0.78em; }
+    .evt-detail { width: 100%; }
+    .evt-actions {
+        gap: 6px;
+        margin-left: 0;
+        margin-top: 6px;
+    }
+    .evt-edit-btn, .evt-del-btn {
+        min-width: var(--touch-min);
+        min-height: var(--touch-min);
+        padding: 8px 10px;
+    }
+    .evt-edit-btn svg, .evt-del-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* ── 1.14 Calendar View Switcher ── */
+    .cal-view-bar {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .cal-view-btn {
+        flex: 1;
+        text-align: center;
+        min-height: var(--touch-min);
+        padding: 10px 8px;
+        font-size: 0.82em;
+    }
+    .cal-nav {
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+        width: 100%;
+        justify-content: center;
+    }
+    .cal-nav-btn {
+        min-width: var(--touch-min);
+        min-height: var(--touch-min);
+    }
+    .cal-nav-today-btn {
+        min-height: 36px;
+        padding: 8px 16px;
+    }
+
+    /* ── 1.15 Calendar Week View ── */
+    .cal-week-grid {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .cal-week-header {
+        grid-template-columns: repeat(7, minmax(80px, 1fr));
+    }
+    .cal-week-body {
+        grid-template-columns: repeat(7, minmax(80px, 1fr));
+    }
+    .cal-week-cell {
+        min-height: 140px;
+        padding: 4px;
+    }
+    .cal-week-day-header { padding: 8px 2px; }
+    .cal-week-day-name { font-size: 0.65em; }
+    .cal-week-day-num { font-size: 1.1em; }
+    .cal-week-evt {
+        font-size: 0.72em;
+        padding: 4px 5px;
+    }
+    .cal-week-evt-actions {
+        position: static;
+        transform: none;
+        margin-top: 2px;
+    }
+    .cal-week-evt-btn {
+        min-width: 28px;
+        min-height: 28px;
+        font-size: 13px;
+    }
+    .cal-week-add-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+    }
+
+    /* ── 1.16 Calendar Month View ── */
+    .cal-month-cell {
+        min-height: 60px;
+        padding: 3px 2px;
+    }
+    .cal-month-cell-num { font-size: 0.72em; }
+    .cal-month-evt { font-size: 0.62em; padding: 1px 3px; }
+    .cal-month-day-name { font-size: 0.62em; padding: 6px 2px; }
+
+    /* ── 1.17 Calendar Year View ── */
+    .cal-year-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .cal-year-month { padding: 10px; }
+    .cal-year-cell { font-size: 0.55em; }
+
+    /* ── 1.18 Add Event Dialog ── */
+    .add-event-input {
+        min-height: var(--touch-min);
+        padding: 10px 12px;
+        font-size: 16px;  /* Prevents iOS zoom */
+    }
+    .add-event-btn, .evt-cancel-btn {
+        min-height: var(--touch-min);
+        padding: 10px 16px;
+    }
+    .cal-add-dialog {
+        width: 95%;
+        max-width: none;
+        padding: 20px 16px;
+        border-radius: 14px;
+    }
+    .evt-edit-form { max-width: 100%; }
+    .week-evt-form { max-width: 100%; }
+
+    /* ── 1.19 Weather Forecast ── */
+    .cal-week-forecast-banner { padding: 16px 12px; }
+    .cal-week-forecast-row { gap: 6px; }
+    .cal-week-forecast-day {
+        min-width: 70px;
+        padding: 10px 6px;
+    }
+    .forecast-row {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .forecast-day { min-width: 70px; }
+
+    /* ── 1.20 Tasks ── */
+    .task-item {
+        padding: 10px 8px;
+        gap: 8px;
+    }
+    .task-circle {
+        width: 24px;
+        height: 24px;
+        flex: 0 0 24px;
+    }
+    .task-action-btn {
+        min-width: var(--touch-min);
+        min-height: var(--touch-min);
+        padding: 8px;
+    }
+    .task-action-btn svg { width: 14px; height: 14px; }
+    .tasks-subtab {
+        min-height: var(--touch-min);
+        padding: 10px 14px;
+        font-size: 0.82em;
+    }
+    .add-task-input {
+        min-height: var(--touch-min);
+        font-size: 16px;  /* Prevents iOS zoom */
+    }
+    .add-task-btn {
+        min-width: var(--touch-min);
+        min-height: var(--touch-min);
+    }
+    .add-task-list {
+        min-height: var(--touch-min);
+        font-size: 16px;
+    }
+
+    /* ── 1.21 Habits ── */
+    .habit-row {
+        padding: 10px 0;
+        min-height: var(--touch-min);
+    }
+    .habit-check { width: 22px; height: 22px; }
+    .habits-edit-btn {
+        min-width: var(--touch-min);
+        min-height: var(--touch-min);
+        padding: 8px 12px;
+    }
+
+    /* ── 1.22 Mail ── */
+    .mail-toolbar {
+        padding: 10px 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .mail-compose-btn {
+        min-height: var(--touch-min);
+        padding: 8px 14px;
+    }
+    .mail-search {
+        min-height: var(--touch-min);
+        font-size: 16px;  /* Prevents iOS zoom */
+    }
+    .mail-item { padding: 12px; }
+    .mail-actions {
+        position: static;
+        transform: none;
+        display: flex;
+        margin-top: 8px;
+        background: none;
+        box-shadow: none;
+        padding: 0;
+        border-radius: 0;
+    }
+    .mail-action-btn {
+        min-width: var(--touch-min);
+        min-height: var(--touch-min);
+    }
+
+    /* ── 1.23 News ── */
+    .news-item {
+        padding: 12px 6px;
+        gap: 8px;
+    }
+    .news-read-btn, .news-save-btn {
+        min-width: 36px;
+        min-height: 36px;
+    }
+    .news-filter-btn {
+        min-height: 36px;
+        padding: 6px 12px;
+    }
+
+    /* ── 1.24 iMessage ── */
+    .imsg-client {
+        flex-direction: column;
+        height: auto;
+        min-height: 500px;
+    }
+    .imsg-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        max-height: 250px;
+    }
+    .imsg-convo-item {
+        padding: 10px 12px;
+        min-height: var(--touch-min);
+    }
+    .imsg-search {
+        min-height: var(--touch-min);
+        font-size: 16px;
+    }
+
+    /* ── 1.25 Notes ── */
+    .anotes-shell {
+        flex-direction: column;
+        height: auto;
+    }
+    .anotes-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        max-height: 35vh;
+    }
+    .anotes-reader-content { padding: 20px 16px; }
+    .anotes-item {
+        min-height: var(--touch-min);
+        padding: 10px 14px;
+    }
+    .anotes-search {
+        min-height: 36px;
+        font-size: 16px;
+    }
+    .anotes-open-btn, .anotes-delete-btn {
+        min-width: var(--touch-min);
+        min-height: var(--touch-min);
+    }
+
+    /* ── 1.26 Web Panel ── */
+    .web-panel-input {
+        min-height: var(--touch-min);
+        font-size: 16px;
+    }
+    .web-panel-go-btn {
+        min-height: var(--touch-min);
+        padding: 8px 14px;
+    }
+
+    /* ── 1.27 FAB Button ── */
+    .cal-add-fab {
+        bottom: calc(24px + var(--safe-bottom));
+        right: 20px;
+        width: 56px;
+        height: 56px;
+    }
+
+    /* ── 1.28 App Launcher ── */
+    .app-launcher-dropdown { width: 180px; }
+    .app-launcher-item {
+        min-height: var(--touch-min);
+        padding: 10px 14px;
+    }
+
+    /* ── 1.29 Shortcut Overlay ── */
+    .shortcut-modal {
+        min-width: auto;
+        max-width: 95vw;
+        padding: 20px 16px;
+    }
+    .shortcut-grid { grid-template-columns: 1fr; }
+
+    /* ── 1.30 Footer ── */
+    footer {
+        padding: 16px;
+        padding-bottom: calc(16px + var(--safe-bottom));
+        font-size: 0.7em;
+    }
+    .footer-shortcut { display: none; }
+}
+
+
+/* ── 2. Ultra-narrow: 375px (iPhone SE/mini) ── */
+@media (max-width: 375px) {
+    .tab-btn {
+        padding: 8px 10px;
+        font-size: 0;       /* Hide text labels */
+    }
+    .tab-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+    .tab-badge {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+    }
+    .tab-btn {
+        position: relative;  /* For absolute badge positioning */
+    }
+    .greeting { font-size: 1.2em; }
+    .summary-cards { grid-template-columns: 1fr; }
+    .amount { font-size: 1.4em; }
+    .cal-year-grid { grid-template-columns: 1fr; }
+}
+
+
+/* ── 3. Swipe visual feedback ── */
+.tab-panel.swiping-left {
+    transform: translateX(-20px);
+    opacity: 0.85;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.tab-panel.swiping-right {
+    transform: translateX(20px);
+    opacity: 0.85;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}

@@ -1,0 +1,37 @@
+# Generated output
+dashboard.html
+dashboard.stamp
+
+# Config with secrets
+config.json
+
+# Cache files
+.*_cache.json
+.net_worth_history.json
+.hw_cache.json
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ruff_cache/
+
+# Compiled binaries
+cal_helper
+dashboard_refresher
+
+# Claude Code settings (machine-specific)
+.claude/
+
+# Nested git repos
+cardio-schedule/
+
+# Temp files
+*.tmp
+
+# Compiled macOS apps
+apps/*.app
+apps/CalHelper_new

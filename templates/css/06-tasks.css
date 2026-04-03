@@ -1,0 +1,847 @@
+/* ── Prevent text selection on double-click targets ── */
+.task-item .task-title,
+.task-item .task-main-row { user-select: none; -webkit-user-select: none; cursor: default; }
+.task-item .task-title:focus, .task-item .task-main-row:focus { user-select: text; }
+
+/* ── Area group headers ── */
+.area-group {
+    margin-bottom: 4px;
+    border-radius: 8px;
+    transition: opacity 0.2s;
+}
+.area-group:last-child {
+    margin-bottom: 0;
+}
+.area-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-faint);
+    padding: 10px 0 4px;
+    cursor: pointer;
+    user-select: none;
+}
+.area-header:hover .area-header-label { color: var(--accent); }
+.area-header-label {
+    transition: color 0.15s;
+}
+.area-drag-handle {
+    font-size: 1.4em;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity 0.15s;
+    color: var(--text-faintest);
+    padding: 0 2px;
+    cursor: grab;
+}
+.area-drag-handle:active { cursor: grabbing; }
+.area-header:hover .area-drag-handle { opacity: 0.6; }
+.area-count {
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--subtle-bg);
+    border: 1px solid var(--border);
+    padding: 0 6px;
+    border-radius: 10px;
+    line-height: 1.6;
+}
+.area-open-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-faintest);
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s;
+    padding: 2px 3px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+.area-header:hover .area-open-btn { opacity: 1; }
+.area-open-btn:hover { color: var(--accent); background: var(--accent-ring); }
+.area-chevron {
+    margin-left: auto;
+    font-size: 1.1em;
+    color: var(--text-faintest);
+    transition: transform 0.2s;
+}
+.area-chevron.collapsed {
+    transform: rotate(-90deg);
+}
+.area-body {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+.area-body.area-collapsed {
+    max-height: 0 !important;
+}
+.area-dragging { opacity: 0.4; }
+.area-drag-over { border-top: 3px solid var(--accent) !important; }
+
+/* ── Sub-tab bar (Today / Upcoming / Projects) ── */
+.tasks-subtab-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 0;
+}
+.tasks-subtab {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    padding: 6px 14px;
+    font-size: 0.82em;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 6px 6px 0 0;
+    transition: color 0.15s, border-color 0.15s;
+    font-family: inherit;
+}
+.tasks-subtab:hover { color: var(--text); }
+.tasks-subtab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* ── Count badge on sub-tabs ── */
+.tasks-subtab-badge {
+    display: inline-block;
+    font-size: 0.78em;
+    font-weight: 700;
+    background: var(--border-light);
+    border-radius: 8px;
+    padding: 0 5px;
+    margin-left: 5px;
+    color: var(--text-faint);
+    vertical-align: middle;
+    line-height: 1.6;
+    transition: background 0.15s, color 0.15s;
+}
+.tasks-subtab.active .tasks-subtab-badge {
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+    color: var(--accent);
+}
+
+/* ── Weekly stats strip (replaces old summary box) ── */
+.task-stats-strip {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 14px;
+    font-size: 0.82em;
+    color: var(--text-faint);
+}
+/* weekly-summary JS renders .weekly-stats/.weekly-stat inside this strip */
+.task-stats-strip .weekly-stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.task-stats-strip .weekly-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+.task-stats-strip .weekly-stat-value {
+    font-size: 1em;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+.task-stats-strip .weekly-stat-label {
+    font-size: 0.88em;
+    color: var(--text-faintest);
+}
+.task-stats-strip .weekly-stat-unit {
+    font-size: 0.75em;
+    font-weight: 400;
+}
+.task-stats-strip .weekly-stat-text {
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+/* ── Main collapsible sections (TODAY / UPCOMING / PROJECTS) ── */
+.task-main-section {
+    margin-bottom: 2px;
+}
+.task-main-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 2px 8px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 2px solid var(--border-light);
+    margin-bottom: 6px;
+    transition: border-color 0.15s;
+}
+.task-main-section-header:hover {
+    border-bottom-color: var(--accent);
+}
+.task-main-section-title {
+    font-size: 0.72em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    color: var(--text-muted);
+    flex: 1;
+    transition: color 0.15s;
+}
+.task-main-section-header:hover .task-main-section-title {
+    color: var(--accent);
+}
+#section-today .task-main-section-title {
+    color: var(--accent);
+}
+.task-main-section-count {
+    font-size: 0.78em;
+    font-weight: 700;
+    background: var(--border-light);
+    border-radius: 10px;
+    padding: 1px 7px;
+    color: var(--text-faint);
+    line-height: 1.6;
+    transition: background 0.15s, color 0.15s;
+}
+.task-main-section-header:hover .task-main-section-count {
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+    color: var(--accent);
+}
+.task-main-section-chevron {
+    font-size: 1.05em;
+    color: var(--text-faintest);
+    transition: transform 0.25s;
+    flex-shrink: 0;
+}
+.task-main-section-chevron.collapsed {
+    transform: rotate(-90deg);
+}
+.task-main-section-body {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+.task-main-section-body.section-collapsed {
+    max-height: 0 !important;
+}
+
+/* ── Overdue section in Today tab ── */
+.task-overdue-section .area-header {
+    color: var(--red);
+}
+.task-overdue-section .area-header-label {
+    color: var(--red);
+}
+.task-overdue-section .area-header:hover .area-header-label {
+    color: color-mix(in srgb, var(--red) 75%, var(--text));
+}
+.task-overdue-section .area-count {
+    background: var(--red);
+    color: #fff;
+    border-color: var(--red);
+}
+
+/* ── Task styles ── */
+.task-summary {
+    color: var(--text-muted);
+    font-size: 0.88em;
+    font-weight: 500;
+    margin-bottom: 16px;
+    padding: 10px 16px;
+    background: var(--subtle-bg);
+    border-radius: 8px;
+}
+.task-list { list-style: none; }
+.task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 12px;
+    margin: 0 -12px;
+    border-bottom: 1px solid var(--border-lightest);
+    border-radius: 6px;
+    position: relative;
+    transition: background 0.12s ease;
+}
+.task-item:hover { background: var(--subtle-bg); }
+.task-item:last-child { border-bottom: none; }
+.task-circle {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--text-faintest);
+    border-radius: 50%;
+    margin-top: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    text-decoration: none;
+}
+.task-circle:hover {
+    border-color: var(--green-dark);
+    background: rgba(56, 161, 105, 0.1);
+}
+.task-item.completed .task-circle {
+    border-color: var(--green-dark);
+    background: var(--green-dark);
+}
+.task-item.completed .task-title {
+    text-decoration: line-through;
+    color: var(--text-faint);
+}
+.task-item.completed .task-project,
+.task-item.completed .task-deadline {
+    opacity: 0.4;
+}
+.task-item.completed {
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+}
+.task-drag-handle {
+    flex: 0 0 14px;
+    color: var(--text-faintest);
+    cursor: grab;
+    font-size: 1.1em;
+    line-height: 1;
+    padding-top: 2px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    user-select: none;
+}
+.task-item:hover .task-drag-handle { opacity: 1; }
+.task-drag-handle:active { cursor: grabbing; }
+.task-item.dragging { opacity: 0.4; }
+.task-item.drag-over { border-top: 2px solid var(--accent); }
+.task-content { flex: 1; min-width: 0; }
+.task-main-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 2px 0;
+}
+.task-title { font-size: 0.95em; color: var(--text); font-weight: 500; }
+.task-project {
+    display: inline-block;
+    font-size: 0.75em;
+    color: var(--accent);
+    margin-left: 6px;
+    font-weight: 500;
+}
+.task-deadline {
+    display: inline-block;
+    font-size: 0.7em;
+    font-weight: 600;
+    margin-left: 6px;
+    padding: 1px 7px;
+    border-radius: 10px;
+    vertical-align: middle;
+    letter-spacing: 0.2px;
+    color: var(--text-muted);
+    background: var(--border-light);
+    cursor: pointer;
+    transition: filter 0.12s, transform 0.12s;
+}
+.task-deadline:hover {
+    filter: brightness(0.9);
+    transform: scale(1.05);
+}
+
+/* ── Set-due-date button (shown on hover for tasks without deadlines) ── */
+.task-due-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: var(--text-faintest);
+    margin-left: 6px;
+    padding: 1px 5px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+    vertical-align: middle;
+}
+.task-item:hover .task-due-btn { opacity: 0.6; }
+.task-due-btn:hover {
+    opacity: 1 !important;
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-ring);
+}
+.task-deadline.deadline-overdue {
+    color: #fff;
+    background: var(--red);
+}
+.task-deadline.deadline-today {
+    color: #fff;
+    background: var(--orange);
+}
+.task-deadline.deadline-tomorrow {
+    color: var(--orange);
+    background: color-mix(in srgb, var(--orange) 12%, transparent);
+}
+.task-deadline.deadline-week {
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.task-deadline.deadline-later {
+    color: var(--text-faint);
+    background: var(--border-light);
+}
+.task-today-pill {
+    display: inline-block;
+    font-size: 0.72em;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent);
+    border-radius: 10px;
+    padding: 1px 7px;
+    margin-left: 7px;
+    vertical-align: middle;
+    letter-spacing: 0.3px;
+}
+
+/* ── Task notes preview ── */
+.task-notes {
+    display: none;
+    font-size: 0.82em;
+    color: var(--text-muted);
+    margin-top: 5px;
+    padding: 6px 10px;
+    background: var(--subtle-bg);
+    border-radius: 6px;
+    border-left: 3px solid var(--border);
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.5;
+}
+
+/* ── Task action buttons ── */
+.task-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    flex-shrink: 0;
+    padding-top: 1px;
+}
+.task-item:hover .task-actions { opacity: 1; }
+.task-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 5px;
+    border-radius: 5px;
+    color: var(--text-faint);
+    font-size: 0.85em;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.12s, color 0.12s;
+}
+.task-action-btn:hover {
+    background: var(--subtle-bg);
+    color: var(--text);
+}
+.task-edit-btn:hover { color: var(--accent); }
+.task-delete-btn:hover { color: var(--red); }
+.task-notes-btn { font-size: 0.9em; }
+.task-notes-btn.active {
+    color: var(--accent);
+    background: var(--accent-ring);
+}
+
+/* ── Inline task edit form ── */
+.task-edit-form {
+    display: none;
+    margin-top: 7px;
+    padding: 8px 10px;
+    background: var(--subtle-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+.task-edit-input {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 9px;
+    font-size: 0.9em;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--input-bg);
+    outline: none;
+    margin-bottom: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+.task-edit-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-ring);
+}
+.task-edit-date {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 9px;
+    font-size: 0.85em;
+    font-family: inherit;
+    color: var(--text-muted);
+    background: var(--input-bg);
+    outline: none;
+    margin-bottom: 8px;
+    transition: border-color 0.2s;
+}
+.task-edit-date:focus { border-color: var(--accent); }
+.task-edit-form .task-edit-save,
+.task-edit-form .task-edit-cancel {
+    border: none;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 0.82em;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+}
+.task-edit-save {
+    background: var(--accent);
+    color: #fff;
+    margin-right: 6px;
+}
+.task-edit-save:hover { background: var(--accent-hover); }
+.task-edit-cancel {
+    background: var(--subtle-bg);
+    color: var(--text-muted);
+    border: 1px solid var(--border) !important;
+}
+.task-edit-cancel:hover { background: var(--border-light); color: var(--text); }
+
+/* Add task input */
+.add-task-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border-light);
+}
+.add-task-input {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--input-bg);
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+.add-task-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-ring);
+}
+.add-task-input::placeholder { color: var(--text-faintest); }
+.add-task-list {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0 8px;
+    height: 36px;
+    font-size: 0.82em;
+    font-family: inherit;
+    color: var(--text-muted);
+    background: var(--input-bg);
+    outline: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.2s ease;
+    max-width: 130px;
+}
+.add-task-list:focus { border-color: var(--accent); }
+.add-task-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 1.3em;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    flex-shrink: 0;
+}
+.add-task-btn:hover { background: var(--accent-hover); }
+
+/* ── Projects panel — area groupings ── */
+.project-area-group {
+    margin-bottom: 16px;
+}
+.project-area-group:last-child { margin-bottom: 0; }
+.project-area-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-faint);
+    padding: 10px 0 6px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid var(--border-lightest);
+    margin-bottom: 6px;
+}
+.project-area-header:hover .project-area-label { color: var(--accent); }
+.project-area-label { transition: color 0.15s; flex: 1; }
+.project-area-header .area-drag-handle {
+    font-size: 1.2em;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity 0.15s;
+    color: var(--text-faintest);
+    padding: 0 2px;
+    cursor: grab;
+}
+.project-area-header .area-drag-handle:active { cursor: grabbing; }
+.project-area-header:hover .area-drag-handle { opacity: 0.6; }
+.project-area-body {
+    padding-left: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+.project-area-body.area-collapsed {
+    max-height: 0 !important;
+}
+.add-project-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-faint);
+    font-size: 1.1em;
+    font-weight: 600;
+    line-height: 1;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+    flex-shrink: 0;
+    padding: 0;
+}
+.add-project-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+/* ── New project inline form ── */
+.new-project-form {
+    margin: 10px 0 4px;
+    padding: 12px 14px;
+    background: var(--subtle-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+.new-project-form-inner { display: flex; flex-direction: column; gap: 8px; }
+.new-project-area-label {
+    font-size: 0.75em;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.new-project-actions { display: flex; gap: 6px; }
+
+/* ── Projects panel ── */
+.project-group {
+    margin-bottom: 6px;
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+    transition: opacity 0.2s;
+}
+.project-group:last-child { margin-bottom: 0; }
+.project-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    user-select: none;
+    background: var(--subtle-bg);
+    transition: background 0.15s;
+}
+.project-header:hover { background: var(--border-lightest); }
+.proj-drag-handle {
+    font-size: 1.1em;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity 0.15s;
+    color: var(--text-faintest);
+    padding: 0 4px 0 2px;
+    cursor: grab;
+    flex-shrink: 0;
+}
+.proj-drag-handle:active { cursor: grabbing; }
+.project-header:hover .proj-drag-handle { opacity: 0.6; }
+.project-title {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.project-open-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-faintest);
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s;
+    padding: 3px 4px;
+    border-radius: 5px;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+.project-header:hover .project-open-btn {
+    opacity: 1;
+}
+.project-open-btn:hover {
+    color: var(--accent);
+    background: var(--accent-ring);
+}
+.project-notes {
+    font-size: 0.82em;
+    color: var(--text-muted);
+    padding: 8px 14px;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-lightest);
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.5;
+}
+.project-group .task-list {
+    padding: 0 6px;
+}
+.project-group .task-item {
+    padding: 8px 8px;
+    margin: 0 -8px;
+}
+.task-item-empty {
+    padding: 10px 0;
+    color: var(--text-faintest);
+    font-size: 0.85em;
+    font-style: italic;
+    list-style: none;
+}
+
+/* ── Date picker popover ── */
+.task-date-popover {
+    position: fixed;
+    z-index: 9999;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08);
+    min-width: 180px;
+    animation: datePopIn 0.12s ease-out;
+}
+@keyframes datePopIn {
+    from { opacity: 0; transform: scale(0.95) translateY(-4px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.date-pick-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-size: 0.88em;
+    font-family: inherit;
+    color: var(--text);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.1s;
+}
+.date-pick-option:hover {
+    background: var(--subtle-bg);
+}
+.date-pick-icon {
+    width: 20px;
+    text-align: center;
+    font-size: 1.05em;
+    flex-shrink: 0;
+}
+.date-pick-label {
+    flex: 1;
+    font-weight: 500;
+}
+.date-pick-day {
+    font-size: 0.82em;
+    color: var(--text-faintest);
+    font-weight: 400;
+}
+.date-pick-divider {
+    height: 1px;
+    background: var(--border-lightest);
+    margin: 3px 8px;
+}
+.date-pick-option.destructive { color: var(--red); }
+.date-pick-option.destructive:hover { background: color-mix(in srgb, var(--red) 8%, transparent); }
+.date-pick-custom {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+}
+.date-pick-custom input[type="date"] {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 8px;
+    font-size: 0.85em;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--input-bg);
+    outline: none;
+    transition: border-color 0.15s;
+}
+.date-pick-custom input[type="date"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-ring);
+}
+.date-pick-custom button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.82em;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.12s;
+    white-space: nowrap;
+}
+.date-pick-custom button:hover { background: var(--accent-hover); }

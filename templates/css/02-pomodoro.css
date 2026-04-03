@@ -1,0 +1,181 @@
+/* ── Pomodoro Timer Widget ── */
+
+.pomodoro-widget {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 4px 10px 4px 6px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s, box-shadow 0.3s;
+    position: relative;
+}
+
+.pomodoro-widget:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+/* SVG ring container */
+.pomo-ring-wrap {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.pomo-ring-wrap svg {
+    width: 28px;
+    height: 28px;
+    transform: rotate(-90deg);
+}
+
+.pomo-ring-bg {
+    fill: none;
+    stroke: rgba(255,255,255,0.2);
+    stroke-width: 3;
+}
+
+.pomo-ring-progress {
+    fill: none;
+    stroke: rgba(255,255,255,0.8);
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s linear, stroke 0.3s;
+}
+
+/* State colors */
+.pomodoro-widget.pomo-working .pomo-ring-progress { stroke: #fc8181; }
+.pomodoro-widget.pomo-break .pomo-ring-progress { stroke: #68d391; }
+.pomodoro-widget.pomo-long-break .pomo-ring-progress { stroke: #63b3ed; }
+
+/* Pulse glow when active */
+.pomodoro-widget.pomo-working {
+    box-shadow: 0 0 12px rgba(252,129,129,0.4);
+    animation: pomo-pulse-red 2s ease-in-out infinite;
+}
+.pomodoro-widget.pomo-break,
+.pomodoro-widget.pomo-long-break {
+    box-shadow: 0 0 12px rgba(104,211,145,0.4);
+    animation: pomo-pulse-green 2s ease-in-out infinite;
+}
+
+@keyframes pomo-pulse-red {
+    0%, 100% { box-shadow: 0 0 8px rgba(252,129,129,0.3); }
+    50%      { box-shadow: 0 0 16px rgba(252,129,129,0.6); }
+}
+@keyframes pomo-pulse-green {
+    0%, 100% { box-shadow: 0 0 8px rgba(104,211,145,0.3); }
+    50%      { box-shadow: 0 0 16px rgba(104,211,145,0.6); }
+}
+
+/* Timer text */
+.pomo-time {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    min-width: 38px;
+    text-align: center;
+}
+
+.pomo-phase {
+    font-size: 9px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: none; /* shown when active */
+}
+
+.pomodoro-widget.pomo-working .pomo-phase,
+.pomodoro-widget.pomo-break .pomo-phase,
+.pomodoro-widget.pomo-long-break .pomo-phase {
+    display: block;
+}
+
+/* Session dots */
+.pomo-dots {
+    display: flex;
+    gap: 3px;
+    margin-left: 2px;
+}
+
+.pomo-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transition: background 0.3s;
+}
+
+.pomo-dot.filled { background: rgba(255,255,255,0.9); }
+
+/* Controls on hover/active */
+.pomo-controls {
+    display: none;
+    gap: 2px;
+    margin-left: 4px;
+}
+
+.pomodoro-widget:hover .pomo-controls,
+.pomodoro-widget.pomo-working .pomo-controls,
+.pomodoro-widget.pomo-break .pomo-controls,
+.pomodoro-widget.pomo-long-break .pomo-controls {
+    display: flex;
+}
+
+.pomo-btn {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #fff;
+    padding: 0;
+    transition: background 0.2s;
+}
+
+.pomo-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.pomo-btn svg {
+    width: 10px;
+    height: 10px;
+}
+
+/* Idle state — show play icon in ring center */
+.pomo-play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255,255,255,0.7);
+    pointer-events: none;
+}
+
+.pomodoro-widget.pomo-working .pomo-play-icon,
+.pomodoro-widget.pomo-break .pomo-play-icon,
+.pomodoro-widget.pomo-long-break .pomo-play-icon,
+.pomodoro-widget.pomo-paused .pomo-play-icon {
+    display: none;
+}
+
+/* Tooltip */
+.pomodoro-widget[title] {
+    position: relative;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .pomo-phase { display: none !important; }
+    .pomo-dots { display: none; }
+    .pomodoro-widget { padding: 4px 8px 4px 4px; }
+}
