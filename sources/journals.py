@@ -14,9 +14,10 @@ _CACHE_FILE = Path(__file__).parent.parent / ".journals_cache.json"
 _CACHE_MAX_AGE = 12 * 3600  # 12 hours (journals publish infrequently)
 
 DEFAULT_JOURNAL_FEEDS = [
-    {"name": "Healio Cardiology", "url": "https://www.healio.com/rss/cardiology"},
-    {"name": "Medpage Cardiology", "url": "https://www.medpagetoday.com/rss/cardiology.xml"},
-    {"name": "Cardiobrief",        "url": "https://cardiobrief.org/feed/"},
+    {"name": "Cardiobrief",            "url": "https://cardiobrief.org/feed/"},
+    {"name": "AHA Heart News",         "url": "https://newsroom.heart.org/cats/heart_news.xml"},
+    {"name": "Medical Xpress Cardio",  "url": "https://medicalxpress.com/rss-feed/cardiology-news/"},
+    {"name": "AHA Statements",         "url": "https://newsroom.heart.org/cats/scientific_statements_guidelines.xml"},
 ]
 
 _DC_NS   = "http://purl.org/dc/elements/1.1/"

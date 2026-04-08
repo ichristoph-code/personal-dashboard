@@ -9,6 +9,7 @@
     background-repeat: no-repeat;
     transition: opacity 1.8s ease-in-out;
     pointer-events: none;
+    filter: brightness(0.58) saturate(0.45) contrast(0.80);
 }
 
 #bgPhotoA {
@@ -73,6 +74,22 @@ body.has-bg-photo .draggable-card * {
         0 0 6px rgba(0,0,0,1),
         0 1px 3px rgba(0,0,0,1),
         0 0 20px rgba(0,0,0,0.8);
+}
+
+/* News action buttons: restore visibility over the photo background */
+body.has-bg-photo .news-read-btn,
+body.has-bg-photo .news-save-btn {
+    color: rgba(255,255,255,0.7) !important;
+    border-color: rgba(255,255,255,0.4) !important;
+    text-shadow: none !important;
+    background: rgba(0,0,0,0.3) !important;
+}
+
+body.has-bg-photo .news-read-btn:hover,
+body.has-bg-photo .news-save-btn:hover {
+    color: #fff !important;
+    border-color: rgba(255,255,255,0.8) !important;
+    background: rgba(0,0,0,0.5) !important;
 }
 
 /* Journals panel: no card wrapper, apply same treatment directly */

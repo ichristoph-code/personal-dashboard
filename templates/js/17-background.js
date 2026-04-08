@@ -1,6 +1,7 @@
-/* Rotating Unsplash background photos */
+/* Rotating Unsplash background photos — disabled, using CSS gradient instead */
 (function () {
     'use strict';
+    return; // gradient background active
 
     const KEY = (typeof UNSPLASH_ACCESS_KEY !== 'undefined') ? UNSPLASH_ACCESS_KEY : '';
     if (!KEY) return;
@@ -9,7 +10,7 @@
     const CACHE_TS_KEY = 'unsplash_ts_v2';
     const CACHE_TTL    = 12 * 60 * 60 * 1000;   // 12h
     const ROTATE_MS    = 10 * 60 * 1000;         // rotate every 10 min
-    const QUERIES      = ['landscape nature', 'architecture city night', 'travel destination'];
+    const QUERIES      = ['golden hour landscape', 'coast ocean waves', 'forest mountains nature', 'aerial nature landscape', 'california nature'];
 
     let photos = [];
     let idx    = 0;
