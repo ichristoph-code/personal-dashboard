@@ -1,5 +1,46 @@
 /* ── Today Briefing Tab ── */
 
+/* ── AI Morning Briefing (full-width, above grid) ── */
+.today-briefing {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 16px;
+    box-shadow: var(--card-shadow);
+    border-left: 4px solid var(--accent);
+}
+
+.today-briefing-icon {
+    font-size: 22px;
+    line-height: 1.3;
+    flex-shrink: 0;
+}
+
+.today-briefing-text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text);
+}
+
+body.has-bg-photo .today-briefing {
+    background: rgba(10, 10, 20, 0.30) !important;
+    border-color: rgba(255,255,255,0.12);
+    border-left-color: var(--accent);
+    box-shadow: none;
+}
+
+body.has-bg-photo .today-briefing-text {
+    color: #f0f4f8 !important;
+    text-shadow:
+        0 0 6px rgba(0,0,0,1),
+        0 1px 3px rgba(0,0,0,1),
+        0 0 20px rgba(0,0,0,0.8);
+}
+
 .today-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));

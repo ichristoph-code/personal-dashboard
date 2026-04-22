@@ -61,6 +61,9 @@ _SOURCE_CACHE_MAP = {
     "calendar": _BASE_DIR / ".calendar_cache.json",
     "weather":  _BASE_DIR / ".weather_cache.json",
     "mail":     _BASE_DIR / ".mail_cache.json",
+    "notes":    _BASE_DIR / ".notes_cache.json",
+    "events":   _BASE_DIR / ".events_cache.json",
+    "journals": _BASE_DIR / ".journals_cache.json",
 }
 
 

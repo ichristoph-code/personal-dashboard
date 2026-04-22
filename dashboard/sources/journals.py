@@ -23,12 +23,29 @@ DEFAULT_JOURNAL_FEEDS = [
 _DC_NS   = "http://purl.org/dc/elements/1.1/"
 _ATOM_NS = "http://www.w3.org/2005/Atom"
 
+# Accented characters that don't appear in English medical headlines
+_NON_ENGLISH_CHARS = set('áéíóúüÁÉÍÓÚÜñÑ¿¡àèìòùÀÈÌÒÙ')
+
+
+def _is_english(text):
+    """Return False if the title contains non-English accented characters."""
+    return not any(c in _NON_ENGLISH_CHARS for c in text)
+
+
+def _feed_language(root):
+    """Extract declared language from RSS channel or Atom feed."""
+    lang = (root.findtext('channel/language') or
+            root.findtext(f'{{{_ATOM_NS}}}feed/{{{_ATOM_NS}}}language') or '')
+    return lang.lower()
+
 
 def _parse_items(root, name):
     items = root.findall('.//item') or root.findall(f'.//{{{_ATOM_NS}}}entry')
     result = []
     for item in items[:15]:
         title = (item.findtext('title') or item.findtext(f'{{{_ATOM_NS}}}title') or '').strip()
+        if not title or not _is_english(title):
+            continue
         link = item.findtext('link') or ''
         if not link:
             link_el = item.find(f'{{{_ATOM_NS}}}link')
@@ -85,7 +102,12 @@ def get_journal_articles(feeds=None):
             req = urllib.request.Request(url, headers={"User-Agent": "PersonalDashboard/1.0"})
             with urllib.request.urlopen(req, timeout=8) as resp:
                 tree = ET.parse(resp)
-            fetched = _parse_items(tree.getroot(), name)
+            root = tree.getroot()
+            lang = _feed_language(root)
+            if lang and not lang.startswith('en'):
+                print(f"  Journal feed skipped ({name}): declared language '{lang}'")
+                continue
+            fetched = _parse_items(root, name)
             cache[name] = {"ts": now, "items": fetched}
             cache_updated = True
         except Exception as e:

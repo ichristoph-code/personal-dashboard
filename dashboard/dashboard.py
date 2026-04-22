@@ -161,6 +161,8 @@ def _fetch_sources(source_names, ynab, budget_id, config):
         "ynab_categories":  ("YNAB categories", lambda: ynab.get_categories(budget_id)),
         "contacts":     ("contacts", get_all_contacts),
         "birthdays":    ("birthdays", lambda: get_upcoming_birthdays(30)),
+        "events":       ("SF events", lambda: get_sf_events(config.get("event_feeds", None))),
+        "journals":     ("journals", lambda: get_journal_articles()),
     }
 
     # Per-source timeouts — slow sources get more time
@@ -264,6 +266,16 @@ def _build_email_panel(results):
 def _build_news_panel(results):
     """Build news panel HTML."""
     return build_news_html(results.get("news"))
+
+
+def _build_events_panel(results):
+    """Build SF events panel HTML."""
+    return build_events_html(results.get("events"))
+
+
+def _build_journals_panel(results):
+    """Build journals panel HTML."""
+    return build_journals_html(results.get("journals"))
 
 
 def _build_imessage_panel(results):
@@ -563,6 +575,20 @@ def _build_today_panel(results, config):
     net_worth = fin.get("net_worth", 0) if fin else 0
     ready_to_assign = fin.get("ready_to_assign", 0) if fin else 0
 
+    # Include the AI briefing so it survives AJAX tab refreshes
+    anthropic_key = (config or {}).get("anthropic_api_key", "")
+    briefing_text = generate_morning_briefing(anthropic_key, {
+        "weather": results.get("weather"),
+        "today_events": [
+            e["title"] for e in (results.get("calendar") or [])
+            if e.get("start", "").startswith(datetime.now().strftime('%Y-%m-%d'))
+            and not e.get("all_day")
+        ][:6],
+        "today_tasks": [t.get("title", "") for t in (results.get("things") or {}).get("today", [])][:5],
+        "net_worth": round(net_worth),
+        "ready_to_assign": round(ready_to_assign),
+    })
+
     data = {
         "weather": results.get("weather"),
         "calendar_events": results.get("calendar"),
@@ -572,6 +598,7 @@ def _build_today_panel(results, config):
         "upcoming_birthdays": results.get("birthdays") or [],
         "net_worth": net_worth,
         "ready_to_assign": ready_to_assign,
+        "briefing": briefing_text,
     }
 
     return build_today_html(data)
@@ -937,6 +964,17 @@ def generate_html_dashboard(ynab, budget_id, config=None, default_tab=None):
     journals_html = build_journals_html(results.get("journals"))
 
     # ── AI Morning Briefing ──
+    # Proactively clear stale briefing cache so we never bake yesterday's
+    # text into a freshly-generated dashboard.html (fixes date mismatch).
+    _briefing_cache = Path(__file__).parent / ".briefing_cache.json"
+    try:
+        if _briefing_cache.exists():
+            _bc = json.loads(_briefing_cache.read_text())
+            if _bc.get("date") != datetime.now().strftime("%Y-%m-%d"):
+                _briefing_cache.unlink()
+                print("  Briefing: cleared stale cache from", _bc.get("date"))
+    except Exception:
+        pass
     today_str = datetime.now().strftime('%Y-%m-%d')
     today_events_titles = [
         e["title"] for e in (calendar_events or [])
@@ -1606,6 +1644,66 @@ def _start_server(port, ynab=None, budget_id=None, config=None):
                 self.send_header('Location', '/dashboard.html')
                 self.end_headers()
 
+            elif path == '/dashboard.html':
+                # Stale-date defense: if dashboard.html is from a prior
+                # local date, the baked-in AI briefing is yesterday's
+                # ("Good morning, Ian—it's a foggy Thursday..." on
+                # Saturday). Kick off a background regen if not already
+                # running, AND strip the stale briefing from the served
+                # HTML so the user never sees yesterday's summary on the
+                # today page. The client-side auto-refresh-on-stale
+                # will fill in a fresh briefing via /api/tab/today.
+                try:
+                    p = BASE_DIR / "dashboard.html"
+                    stale = False
+                    if p.exists():
+                        file_date = datetime.fromtimestamp(p.stat().st_mtime).date()
+                        stale = file_date < datetime.now().date()
+                    if stale:
+                        if not _refresh_busy.is_set():
+                            print(f"\n  [Serve] Stale dashboard.html ({file_date}), "
+                                  "kicking off background regen")
+                            _refresh_busy.set()
+                            ctx = _server_context
+                            threading.Thread(
+                                target=_do_refresh,
+                                args=(ctx['ynab'], ctx['budget_id'], ctx['config']),
+                                daemon=True,
+                            ).start()
+                        # Serve the file with the stale briefing stripped
+                        html_bytes = p.read_bytes()
+                        import re as _re
+                        html_bytes = _re.sub(
+                            rb'<div class="today-briefing">.*?</div>\s*</div>',
+                            b'',
+                            html_bytes,
+                            count=1,
+                            flags=_re.DOTALL,
+                        )
+                        # Also strip the simpler one-level-deep form used
+                        # by build_today_html (a single div with a nested
+                        # span+p, closed by a single </div>).
+                        html_bytes = _re.sub(
+                            rb'<div class="today-briefing">'
+                            rb'<span class="today-briefing-icon">[^<]*</span>'
+                            rb'<p class="today-briefing-text">[^<]*</p>'
+                            rb'</div>',
+                            b'',
+                            html_bytes,
+                            count=1,
+                        )
+                        self.send_response(200)
+                        self.send_header('Content-Type', 'text/html; charset=utf-8')
+                        self.send_header('Content-Length', str(len(html_bytes)))
+                        self.send_header('Cache-Control', 'no-store, must-revalidate')
+                        self.end_headers()
+                        self.wfile.write(html_bytes)
+                        return
+                except Exception as e:
+                    print(f"  [Serve] Stale-check error: {e}")
+                # Fresh file — fall through to default static handler
+                super().do_GET()
+
             elif path == '/refresh':
                 params = parse_qs(parsed.query)
                 tab = params.get('tab', [None])[0]
@@ -1733,6 +1831,10 @@ def _start_server(port, ynab=None, budget_id=None, config=None):
                         response["html"] = _build_today_panel(results, cfg)
                     elif tab_name == "system":
                         response["html"] = _build_system_panel(results)
+                    elif tab_name == "events":
+                        response["html"] = _build_events_panel(results)
+                    elif tab_name == "journals":
+                        response["html"] = _build_journals_panel(results)
 
                     print(f"  [API] /api/tab/{tab_name} done in {gen_elapsed}s")
                     self._json_response(200, response)
@@ -1867,6 +1969,53 @@ def _start_server(port, ynab=None, budget_id=None, config=None):
     # full generate_html_dashboard + disk write that collided with the
     # client-side timer and got silently dropped by _refresh_busy.
     auto_mins = (config or {}).get("auto_refresh_minutes", 0)
+
+    # ── Daily regen watchdog ──
+    # The briefing and other date-sensitive content is baked into
+    # dashboard.html at generation time. If the server runs across a
+    # local-date boundary without a regen, the baked briefing goes
+    # stale (e.g. "Good morning, Ian—it's a foggy Thursday..." showing
+    # on Saturday). Client-side AJAX refreshes only replace the in-DOM
+    # today panel; they never rewrite dashboard.html on disk, so the
+    # NEXT fresh page load keeps showing yesterday's briefing until the
+    # AJAX refresh catches up (or fails silently).
+    #
+    # This watchdog runs in a daemon thread and triggers a full regen
+    # whenever dashboard.html's mtime date != today's local date. It
+    # checks once per minute so stale content can never persist longer
+    # than that after a date rollover.
+    def _dashboard_file_date():
+        try:
+            p = BASE_DIR / "dashboard.html"
+            if not p.exists():
+                return None
+            return datetime.fromtimestamp(p.stat().st_mtime).date()
+        except Exception:
+            return None
+
+    def _daily_regen_watchdog():
+        while True:
+            try:
+                today = datetime.now().date()
+                file_date = _dashboard_file_date()
+                if file_date is not None and file_date < today:
+                    if not _refresh_busy.is_set():
+                        print(f"\n  [Watchdog] dashboard.html is from {file_date}, "
+                              f"today is {today} — triggering full regen")
+                        _refresh_busy.set()
+                        t = threading.Thread(
+                            target=_do_refresh,
+                            args=(_server_context['ynab'],
+                                  _server_context['budget_id'],
+                                  _server_context['config']),
+                            daemon=True,
+                        )
+                        t.start()
+            except Exception as e:
+                print(f"  [Watchdog] Error: {e}")
+            _time.sleep(60)
+
+    threading.Thread(target=_daily_regen_watchdog, daemon=True).start()
 
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", port), QuietHandler) as httpd:
