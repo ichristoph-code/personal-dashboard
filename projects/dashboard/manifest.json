@@ -1,0 +1,15 @@
+{
+  "name": "Ian's Dashboard",
+  "short_name": "Dashboard",
+  "description": "Personal dashboard — tasks, calendar, email, finances & more",
+  "start_url": "/dashboard.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
